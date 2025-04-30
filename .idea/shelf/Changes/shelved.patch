@@ -1,0 +1,545 @@
+Index: src/main/java/com/infoorigin/DBeaverWeb/controllers/AuthController.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/controllers/AuthController.java b/src/main/java/com/infoorigin/DBeaverWeb/controllers/AuthController.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/controllers/AuthController.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,63 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.controllers;
+-//
+-//
+-//import com.infoorigin.DBeaverWeb.entities.User;
+-//import com.infoorigin.DBeaverWeb.security.JwtUtil;
+-//import com.infoorigin.DBeaverWeb.services.UserService;
+-//import org.springframework.http.ResponseEntity;
+-//import org.springframework.security.authentication.AuthenticationManager;
+-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+-//import org.springframework.security.core.Authentication;
+-//import org.springframework.security.core.AuthenticationException;
+-//import org.springframework.web.bind.annotation.*;
+-//
+-//import java.util.Map;
+-//
+-//@RestController
+-//@RequestMapping("/api/auth")
+-//public class AuthController {
+-//
+-//    private final AuthenticationManager authenticationManager;
+-//    private final JwtUtil jwtUtil;
+-//    private final UserService userService;
+-//
+-//    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil, UserService userService) {
+-//        this.authenticationManager = authenticationManager;
+-//        this.jwtUtil = jwtUtil;
+-//        this.userService = userService;
+-//    }
+-//
+-//    @PostMapping("/login")
+-//    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+-//        try {
+-//            Authentication authentication = authenticationManager.authenticate(
+-//                    new UsernamePasswordAuthenticationToken(loginRequest.username(), loginRequest.password())
+-//            );
+-//            String role = authentication.getAuthorities().iterator().next().getAuthority();
+-//            String jwt = jwtUtil.generateToken(loginRequest.username(), role);
+-//            return ResponseEntity.ok(new LoginResponse(jwt, loginRequest.username(), role));
+-//        } catch (AuthenticationException e) {
+-//            return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
+-//        }
+-//    }
+-//
+-//    @PostMapping("/register")
+-//    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+-//        try {
+-//            User user = new User();
+-//            user.setUsername(registerRequest.username());
+-//            user.setPassword(registerRequest.password());
+-//            user.setRole(registerRequest.role() != null ? registerRequest.role() : "USER");
+-//            User savedUser = userService.createUser(user);
+-//            return ResponseEntity.ok(Map.of("id", savedUser.getId(), "status", "registered"));
+-//        } catch (IllegalArgumentException e) {
+-//            return ResponseEntity.status(400).body(Map.of("error", e.getMessage()));
+-//        } catch (Exception e) {
+-//            return ResponseEntity.status(500).body(Map.of("error", "Registration failed: " + e.getMessage()));
+-//        }
+-//    }
+-//}
+-//
+-//record LoginRequest(String username, String password) {}
+-//record LoginResponse(String token, String username, String role) {}
+-//record RegisterRequest(String username, String password, String role) {}
+Index: src/main/java/com/infoorigin/DBeaverWeb/security/CustomUserDetailsService.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/security/CustomUserDetailsService.java b/src/main/java/com/infoorigin/DBeaverWeb/security/CustomUserDetailsService.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/security/CustomUserDetailsService.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,42 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.security;
+-//
+-//
+-//import com.infoorigin.DBeaverWeb.entities.User;
+-//import com.infoorigin.DBeaverWeb.repositories.UserRepository;
+-//import org.springframework.security.core.userdetails.UserDetails;
+-//import org.springframework.security.core.userdetails.UserDetailsService;
+-//import org.springframework.security.core.userdetails.UsernameNotFoundException;
+-//import org.springframework.stereotype.Service;
+-//
+-//import java.util.Collections;
+-//
+-///**
+-// * Service to load user details from the UserRepository for Spring Security authentication.
+-// */
+-//@Service
+-//public class CustomUserDetailsService implements UserDetailsService {
+-//
+-//    private final UserRepository userRepository;
+-//
+-//    public CustomUserDetailsService(UserRepository userRepository) {
+-//        this.userRepository = userRepository;
+-//    }
+-//
+-//    /**
+-//     * Loads user details by username.
+-//     *
+-//     * @param username The username to look up.
+-//     * @return UserDetails for the user.
+-//     * @throws UsernameNotFoundException if the user is not found.
+-//     */
+-//    @Override
+-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+-//        User user = userRepository.findByUsername(username)
+-//                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + username));
+-//        return new org.springframework.security.core.userdetails.User(
+-//                user.getUsername(),
+-//                user.getPassword(),
+-//                Collections.singletonList(() -> user.getRole())
+-//        );
+-//    }
+-//}
+Index: src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java b/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,109 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.services;
+-//import com.infoorigin.DBeaverWeb.entities.ConnectionProfile;
+-//import com.zaxxer.hikari.HikariDataSource;
+-//import org.springframework.stereotype.Service;
+-//
+-//import javax.sql.DataSource;
+-//import java.util.Map;
+-//import java.util.UUID;
+-//import java.util.concurrent.ConcurrentHashMap;
+-//
+-//@Service
+-//public class DynamicDataSourceService {
+-//
+-//    // Map of connection ID to DataSource
+-//    private final Map<String, DataSource> dataSources = new ConcurrentHashMap<>();
+-//
+-//    public String createDataSource(String host, String port, String database, String username, String password, String driverClassName) {
+-//        validateConnectionDetails(host, port, database, username, driverClassName);
+-//
+-//        String jdbcUrl = buildJdbcUrl(host, port, database, driverClassName);
+-//        HikariDataSource dataSource = createHikariDataSource(jdbcUrl, username, password, driverClassName);
+-//
+-//        String connectionId = UUID.randomUUID().toString();
+-//        dataSources.put(connectionId, dataSource);
+-//
+-//        return connectionId;
+-//    }
+-//
+-//    public String createDataSourceFromProfile(ConnectionProfile profile) {
+-//        if (profile == null) {
+-//            throw new IllegalArgumentException("Connection profile cannot be null");
+-//        }
+-//        return createDataSource(
+-//                profile.getHost(),
+-//                profile.getPort(),
+-//                profile.getDatabase(),
+-//                profile.getUsername(),
+-//                profile.getPassword(),
+-//                profile.getDriverClassName()
+-//        );
+-//    }
+-//
+-//    public DataSource getDataSource(String connectionId) {
+-//        validateConnectionId(connectionId);
+-//        DataSource dataSource = dataSources.get(connectionId);
+-//        if (dataSource == null) {
+-//            throw new IllegalArgumentException("Connection ID not found: " + connectionId);
+-//        }
+-//        return dataSource;
+-//    }
+-//
+-//    public void removeDataSource(String connectionId) {
+-//        validateConnectionId(connectionId);
+-//        DataSource dataSource = dataSources.remove(connectionId);
+-//        if (dataSource == null) {
+-//            throw new IllegalArgumentException("Connection ID not found: " + connectionId);
+-//        }
+-//        if (dataSource instanceof HikariDataSource hikariDataSource) {
+-//            hikariDataSource.close();
+-//        }
+-//    }
+-//
+-//    private void validateConnectionDetails(String host, String port, String database, String username, String driverClassName) {
+-//        if (host == null || host.isEmpty()) {
+-//            throw new IllegalArgumentException("Host is required");
+-//        }
+-//        if (port == null || port.isEmpty()) {
+-//            throw new IllegalArgumentException("Port is required");
+-//        }
+-//        if (database == null || database.isEmpty()) {
+-//            throw new IllegalArgumentException("Database name is required");
+-//        }
+-//        if (username == null || username.isEmpty()) {
+-//            throw new IllegalArgumentException("Username is required");
+-//        }
+-//        if (driverClassName == null || driverClassName.isEmpty()) {
+-//            throw new IllegalArgumentException("Driver class name is required");
+-//        }
+-//    }
+-//
+-//    private void validateConnectionId(String connectionId) {
+-//        if (connectionId == null || connectionId.isEmpty()) {
+-//            throw new IllegalArgumentException("Connection ID is required");
+-//        }
+-//    }
+-//
+-//    private String buildJdbcUrl(String host, String port, String database, String driverClassName) {
+-//        if ("org.postgresql.Driver".equals(driverClassName)) {
+-//            return String.format("jdbc:postgresql://%s:%s/%s", host, port, database);
+-//        } else if ("org.h2.Driver".equals(driverClassName)) {
+-//            return String.format("jdbc:h2:tcp://%s:%s/%s", host, port, database);
+-//        } else {
+-//            throw new IllegalArgumentException("Unsupported driver class: " + driverClassName);
+-//        }
+-//    }
+-//
+-//    private HikariDataSource createHikariDataSource(String jdbcUrl, String username, String password, String driverClassName) {
+-//        HikariDataSource dataSource = new HikariDataSource();
+-//        dataSource.setJdbcUrl(jdbcUrl);
+-//        dataSource.setUsername(username);
+-//        dataSource.setPassword(password != null ? password : "");
+-//        dataSource.setDriverClassName(driverClassName);
+-//        dataSource.setMaximumPoolSize(10);
+-//        dataSource.setMinimumIdle(2);
+-//        dataSource.setIdleTimeout(300000); // 5 minutes
+-//        dataSource.setConnectionTimeout(30000); // 30 seconds
+-//        return dataSource;
+-//    }
+-//}
+\ No newline at end of file
+Index: src/main/java/com/infoorigin/DBeaverWeb/security/JwtAuthenticationFilter.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/security/JwtAuthenticationFilter.java b/src/main/java/com/infoorigin/DBeaverWeb/security/JwtAuthenticationFilter.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/security/JwtAuthenticationFilter.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,59 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.security;
+-//
+-//
+-//import jakarta.servlet.FilterChain;
+-//import jakarta.servlet.ServletException;
+-//import jakarta.servlet.http.HttpServletRequest;
+-//import jakarta.servlet.http.HttpServletResponse;
+-//import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+-//import org.springframework.security.core.context.SecurityContextHolder;
+-//import org.springframework.security.core.userdetails.UserDetails;
+-//import org.springframework.security.core.userdetails.UserDetailsService;
+-//import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+-//import org.springframework.stereotype.Component;
+-//import org.springframework.web.filter.OncePerRequestFilter;
+-//
+-//import java.io.IOException;
+-//
+-///**
+-// * Filter to validate JWT tokens in HTTP requests and set the authenticated user in the security context.
+-// */
+-//@Component
+-//public class JwtAuthenticationFilter extends OncePerRequestFilter {
+-//
+-//    private final JwtUtil jwtUtil;
+-//    private final UserDetailsService userDetailsService;
+-//
+-//    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsService userDetailsService) {
+-//        this.jwtUtil = jwtUtil;
+-//        this.userDetailsService = userDetailsService;
+-//    }
+-//
+-//    /**
+-//     * Filters requests to validate JWT tokens and authenticate users.
+-//     */
+-//    @Override
+-//    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+-//            throws ServletException, IOException {
+-//        String authHeader = request.getHeader("Authorization");
+-//        String token = null;
+-//        String username = null;
+-//
+-//        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+-//            token = authHeader.substring(7);
+-//            username = jwtUtil.extractUsername(token);
+-//        }
+-//
+-//        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+-//            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+-//            if (jwtUtil.isTokenValid(token, username)) {
+-//                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+-//                        userDetails, null, userDetails.getAuthorities());
+-//                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+-//                SecurityContextHolder.getContext().setAuthentication(authToken);
+-//            }
+-//        }
+-//
+-//        filterChain.doFilter(request, response);
+-//    }
+-//}
+Index: src/main/java/com/infoorigin/DBeaverWeb/security/JwtUtil.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/security/JwtUtil.java b/src/main/java/com/infoorigin/DBeaverWeb/security/JwtUtil.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/security/JwtUtil.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,124 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.security;
+-//
+-//import io.jsonwebtoken.Claims;
+-//import io.jsonwebtoken.Jwts;
+-//import io.jsonwebtoken.SignatureAlgorithm;
+-//import io.jsonwebtoken.security.Keys;
+-//import org.springframework.stereotype.Component;
+-//
+-//import java.nio.charset.StandardCharsets;
+-//import java.security.Key;
+-//import java.util.Date;
+-//import java.util.HashMap;
+-//import java.util.Map;
+-//import java.util.function.Function;
+-//
+-///**
+-// * Utility class for handling JWT token operations: generation, validation, and claim extraction.
+-// */
+-//@Component
+-//public class JwtUtil {
+-//
+-//    private static final String SECRET = "bTpm8B2l78o2LCcFq3vM7yYxJ5RgNlEjg7Tw5ZNpYVfP4qjMy1UhfypoMxQ7ShTx";
+-//    private static final Key SECRET_KEY = Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8));
+-//    private static final long EXPIRATION_TIME = 1000 * 60 * 60 * 10; // 10 hours
+-//
+-//    /**
+-//     * Generates a JWT token for the given username and role.
+-//     *
+-//     * @param username The user's username.
+-//     * @param role     The user's role (e.g., "USER", "ADMIN").
+-//     * @return The generated JWT token.
+-//     */
+-//    public String generateToken(String username, String role) {
+-//        Map<String, Object> claims = new HashMap<>();
+-//        claims.put("role", role);
+-//        return createToken(claims, username);
+-//    }
+-//
+-//    /**
+-//     * Creates a JWT token with the specified claims and subject.
+-//     *
+-//     * @param claims  The claims to include in the token.
+-//     * @param subject The subject (username).
+-//     * @return The JWT token.
+-//     */
+-//    private String createToken(Map<String, Object> claims, String subject) {
+-//        return Jwts.builder()
+-//                .setClaims(claims)
+-//                .setSubject(subject)
+-//                .setIssuedAt(new Date(System.currentTimeMillis()))
+-//                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
+-//                .signWith(SECRET_KEY, SignatureAlgorithm.HS512)
+-//                .compact();
+-//    }
+-//
+-//    /**
+-//     * Extracts the username from a JWT token.
+-//     *
+-//     * @param token The JWT token.
+-//     * @return The username.
+-//     */
+-//    public String extractUsername(String token) {
+-//        return extractClaim(token, Claims::getSubject);
+-//    }
+-//
+-//    /**
+-//     * Extracts the role from a JWT token.
+-//     *
+-//     * @param token The JWT token.
+-//     * @return The role.
+-//     */
+-//    public String extractRole(String token) {
+-//        return extractClaim(token, claims -> claims.get("role", String.class));
+-//    }
+-//
+-//    /**
+-//     * Extracts a specific claim from a JWT token.
+-//     *
+-//     * @param token          The JWT token.
+-//     * @param claimsResolver The function to extract the claim.
+-//     * @param <T>           The type of the claim.
+-//     * @return The extracted claim.
+-//     */
+-//    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+-//        final Claims claims = extractAllClaims(token);
+-//        return claimsResolver.apply(claims);
+-//    }
+-//
+-//    /**
+-//     * Extracts all claims from a JWT token.
+-//     *
+-//     * @param token The JWT token.
+-//     * @return The claims.
+-//     */
+-//    private Claims extractAllClaims(String token) {
+-//        return Jwts.parserBuilder()
+-//                .setSigningKey(SECRET_KEY)
+-//                .build()
+-//                .parseClaimsJws(token)
+-//                .getBody();
+-//    }
+-//
+-//    /**
+-//     * Validates a JWT token against a username.
+-//     *
+-//     * @param token    The JWT token.
+-//     * @param username The username to validate against.
+-//     * @return True if the token is valid, false otherwise.
+-//     */
+-//    public boolean isTokenValid(String token, String username) {
+-//        final String extractedUsername = extractUsername(token);
+-//        return (extractedUsername.equals(username) && !isTokenExpired(token));
+-//    }
+-//
+-//    /**
+-//     * Checks if a JWT token is expired.
+-//     *
+-//     * @param token The JWT token.
+-//     * @return True if expired, false otherwise.
+-//     */
+-//    private boolean isTokenExpired(String token) {
+-//        return extractClaim(token, Claims::getExpiration).before(new Date());
+-//    }
+-//}
+Index: src/main/java/com/infoorigin/DBeaverWeb/security/SecurityConfig.java
+===================================================================
+diff --git a/src/main/java/com/infoorigin/DBeaverWeb/security/SecurityConfig.java b/src/main/java/com/infoorigin/DBeaverWeb/security/SecurityConfig.java
+deleted file mode 100644
+--- a/src/main/java/com/infoorigin/DBeaverWeb/security/SecurityConfig.java	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ /dev/null	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
+@@ -1,73 +0,0 @@
+-//package com.infoorigin.DBeaverWeb.security;
+-//
+-//
+-//import com.infoorigin.DBeaverWeb.security.JwtAuthenticationFilter;
+-//import org.springframework.context.annotation.Bean;
+-//import org.springframework.context.annotation.Configuration;
+-//import org.springframework.security.authentication.AuthenticationManager;
+-//import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+-//import org.springframework.security.config.http.SessionCreationPolicy;
+-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+-//import org.springframework.security.crypto.password.PasswordEncoder;
+-//import org.springframework.security.web.SecurityFilterChain;
+-//import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+-//
+-///**
+-// * Spring Security configuration for JWT-based authentication.
+-// */
+-//@Configuration
+-//@EnableWebSecurity
+-//public class SecurityConfig {
+-//
+-//    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+-//
+-//    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter) {
+-//        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+-//    }
+-//
+-//    /**
+-//     * Configures the security filter chain.
+-//     *
+-//     * @param http The HttpSecurity configuration.
+-//     * @return The SecurityFilterChain.
+-//     * @throws Exception If configuration fails.
+-//     */
+-//    @Bean
+-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+-//        http
+-//                .csrf(csrf -> csrf.disable()) // Disable CSRF for stateless API
+-//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Stateless
+-//                .authorizeHttpRequests(auth -> auth
+-//                        .requestMatchers("/api/auth/**").permitAll() // Allow login and register
+-//                        .requestMatchers("/api/admin/**").hasAuthority("ADMIN") // Restrict admin endpoints
+-//                        .anyRequest().authenticated() // Secure all other endpoints
+-//                )
+-//                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+-//
+-//        return http.build();
+-//    }
+-//
+-//    /**
+-//     * Provides a PasswordEncoder for hashing passwords.
+-//     *
+-//     * @return BCryptPasswordEncoder.
+-//     */
+-//    @Bean
+-//    public PasswordEncoder passwordEncoder() {
+-//        return new BCryptPasswordEncoder();
+-//    }
+-//
+-//    /**
+-//     * Provides an AuthenticationManager for authenticating users.
+-//     *
+-//     * @param authenticationConfiguration The authentication configuration.
+-//     * @return The AuthenticationManager.
+-//     * @throws Exception If configuration fails.
+-//     */
+-//    @Bean
+-//    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+-//        return authenticationConfiguration.getAuthenticationManager();
+-//    }
+-//}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"af83b48a-dbef-48ba-a501-0bb8cef206a4\" name=\"Changes\" comment=\"\">\r\n      <change beforePath=\"$PROJECT_DIR$/.gitignore\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/pom.xml\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/config/DataConfig.java\" beforeDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/DatabaseController.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/DatabaseController.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/ConnectionProfile.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/ConnectionProfile.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/User.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/User.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/ConnectionProfileRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/ConnectionProfileRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/UserRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/UserRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/ConnectionProfileService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/ConnectionProfileService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/UserService.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/UserService.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/resources/application.properties\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/resources/application.properties\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/test/java/com/infoorigin/DBeaverWeb/DBeaverWebApplicationTests.java\" beforeDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 8\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2wFzLET5XR5aueVJIyLvXSXvX7B\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\">{\r\n  &quot;keyToString&quot;: {\r\n    &quot;Application.DBeaverWebApplication.executor&quot;: &quot;Run&quot;,\r\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\r\n    &quot;git-widget-placeholder&quot;: &quot;master&quot;,\r\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\r\n    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;\r\n  }\r\n}</component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CreateClassDialog.RecentsKey\">\r\n      <recent name=\"com.infoorigin.DBeaverWeb.services\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"af83b48a-dbef-48ba-a501-0bb8cef206a4\" name=\"Changes\" comment=\"\" />\r\n      <created>1745652053678</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1745652053678</updated>\r\n    </task>\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 5774ec4ccd13abdf7b14709e63958ca6993ffdf3)
++++ b/.idea/workspace.xml	(date 1746034893657)
+@@ -64,6 +64,21 @@
+       <recent name="com.infoorigin.DBeaverWeb.services" />
+     </key>
+   </component>
++  <component name="RunManager">
++    <configuration default="true" type="JetRunConfigurationType">
++      <module name="dbeaver-web" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
++      <module name="dbeaver-web" />
++      <option name="filePath" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++  </component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">

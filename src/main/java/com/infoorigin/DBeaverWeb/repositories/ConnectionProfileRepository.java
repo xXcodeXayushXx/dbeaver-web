@@ -11,5 +11,5 @@ import java.util.List;
 @Repository
 public interface ConnectionProfileRepository extends JpaRepository<ConnectionProfile, Long> {
 
-    List<ConnectionProfile> findByUserId(Long userId);
+    List<ConnectionProfile> findByConsumerId(Long consumerId);
 }

@@ -12,7 +12,7 @@
 //public class QueryHistory {
 //    @Id
 //    private Long id;
-//    private Long userId; // Foreign key to User
+//    private Long consumerId; // Foreign key to Consumer
 //    private Long connectionProfileId; // Foreign key to ConnectionProfile (optional)
 //    private String query; // SQL query text
 //    private LocalDateTime executedAt; // Timestamp of execution

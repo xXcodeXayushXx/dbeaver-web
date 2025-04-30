@@ -5,19 +5,36 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="af83b48a-dbef-48ba-a501-0bb8cef206a4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/config/DataConfig.java" beforeDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/ConsumerController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/ConsumerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/ConsumerService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mvnw" beforeDir="false" afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/DBeaverWebApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/DBeaverWebApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/AuthController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/ConnectionProfileController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/ConnectionProfileController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/DatabaseController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/DatabaseController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/controllers/UserController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/ConnectionProfileDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/ConnectionProfileDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/ConnectionRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/ConnectionRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/UserDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/dtos/ConsumerDTO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/ConnectionProfile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/ConnectionProfile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/QueryHistory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/QueryHistory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/Users.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/entities/Consumer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/ConnectionProfileRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/ConnectionProfileRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/repositories/UserRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/security/CustomUserDetailsService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/security/JwtAuthenticationFilter.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/security/JwtUtil.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/security/SecurityConfig.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/ConnectionProfileService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/ConnectionProfileService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DatabaseConnectionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DatabaseConnectionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/DynamicDataSourceService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/infoorigin/DBeaverWeb/services/UserService.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/infoorigin/DBeaverWeb/DBeaverWebApplicationTests.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,19 +67,35 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.DBeaverWebApplication.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;reference.projectsettings.compiler.annotationProcessors&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.DBeaverWebApplication.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.annotationProcessors"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.infoorigin.DBeaverWeb.services" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="dbeaver-web" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="dbeaver-web" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">

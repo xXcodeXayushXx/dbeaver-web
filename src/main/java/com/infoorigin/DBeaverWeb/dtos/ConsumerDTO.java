@@ -3,7 +3,7 @@ package com.infoorigin.DBeaverWeb.dtos;
 import lombok.Data;
 
 @Data
-public class UserDTO {
+public class ConsumerDTO {
     private Long id;
     private String username;
     private String password; // Included in request, excluded in response

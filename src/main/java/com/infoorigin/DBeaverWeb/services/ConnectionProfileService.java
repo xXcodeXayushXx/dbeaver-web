@@ -2,9 +2,9 @@ package com.infoorigin.DBeaverWeb.services;
 
 import com.infoorigin.DBeaverWeb.dtos.ConnectionProfileDTO;
 import com.infoorigin.DBeaverWeb.entities.ConnectionProfile;
-import com.infoorigin.DBeaverWeb.entities.User;
+import com.infoorigin.DBeaverWeb.entities.Consumer;
 import com.infoorigin.DBeaverWeb.repositories.ConnectionProfileRepository;
-import com.infoorigin.DBeaverWeb.repositories.UserRepository;
+import com.infoorigin.DBeaverWeb.repositories.ConsumerRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -14,23 +14,23 @@ import java.util.List;
 public class ConnectionProfileService {
 
     private final ConnectionProfileRepository connectionProfileRepository;
-    private final UserRepository userRepository;
+    private final ConsumerRepository consumerRepository;
 
     public ConnectionProfileService(
             ConnectionProfileRepository connectionProfileRepository,
-            UserRepository userRepository) {
+            ConsumerRepository consumerRepository) {
         this.connectionProfileRepository = connectionProfileRepository;
-        this.userRepository = userRepository;
+        this.consumerRepository = consumerRepository;
     }
 
     public ConnectionProfile createConnectionProfile(ConnectionProfileDTO profileDTO) {
-        // Find user
-        User user = userRepository.findById(profileDTO.getUserId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+        // Find consumer
+        Consumer consumer = consumerRepository.findById(profileDTO.getConsumerId())
+                .orElseThrow(() -> new RuntimeException("Consumer not found"));
 
         // Create connection profile
         ConnectionProfile profile = new ConnectionProfile();
-        profile.setUser(user);
+        profile.setConsumer(consumer);
         profile.setName(profileDTO.getName());
         profile.setDatabaseType(profileDTO.getDatabaseType());
         profile.setHost(profileDTO.getHost());
@@ -48,8 +48,8 @@ public class ConnectionProfileService {
                 .orElseThrow(() -> new RuntimeException("Connection profile not found"));
     }
 
-    public List<ConnectionProfile> getConnectionProfilesByUserId(Long userId) {
-        return connectionProfileRepository.findByUserId(userId);
+    public List<ConnectionProfile> getConnectionProfilesByConsumerId(Long consumerId) {
+        return connectionProfileRepository.findByConsumerId(consumerId);
     }
 
     public void updateLastConnected(Long profileId) {

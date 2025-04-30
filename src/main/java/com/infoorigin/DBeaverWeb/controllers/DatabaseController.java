@@ -25,6 +25,10 @@ public class DatabaseController {
     }
 
     @PostMapping("/connect")
+    /**
+     * The JSON request body for this endpoint must use the field 'databaseName'
+     * to match the ConnectionRequest DTO and connection logic.
+     */
     public ResponseEntity<ConnectionResponse> connect(
             @RequestBody ConnectionRequest connectionRequest) {
         String connectionId = connectionService.connect(connectionRequest);

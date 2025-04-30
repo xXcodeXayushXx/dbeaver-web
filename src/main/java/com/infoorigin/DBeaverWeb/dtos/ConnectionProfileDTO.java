@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ConnectionProfileDTO {
     private Long id;
-    private Long userId;
+    private Long consumerId;
     private String name;
     private String databaseType;
     private String host;

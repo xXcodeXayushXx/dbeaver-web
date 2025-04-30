@@ -47,7 +47,7 @@ public class DatabaseConnectionService {
             // If connecting using direct credentials
             else {
                 url = buildJdbcUrl(
-                        request.getDbType(),
+                        request.getDatabaseType(),
                         request.getHost(),
                         request.getPort(),
                         request.getDatabaseName()
@@ -66,7 +66,7 @@ public class DatabaseConnectionService {
             DatabaseConnectionInfo connectionInfo = new DatabaseConnectionInfo();
             connectionInfo.setConnection(connection);
             connectionInfo.setProfileId(profileId);
-            connectionInfo.setDbType(request.getDbType() != null ? request.getDbType() :
+            connectionInfo.setDatabaseType(request.getDatabaseType() != null ? request.getDatabaseType() :
                     connectionProfileService.getConnectionProfileById(profileId).getDatabaseType());
             connectionInfo.setConnectedAt(LocalDateTime.now());
 
@@ -116,8 +116,8 @@ public class DatabaseConnectionService {
         return activeConnections.containsKey(connectionId);
     }
 
-    private String buildJdbcUrl(String dbType, String host, Integer port, String databaseName) {
-        switch (dbType.toLowerCase()) {
+    private String buildJdbcUrl(String databaseType, String host, Integer port, String databaseName) {
+        switch (databaseType.toLowerCase()) {
             case "mysql":
                 return "jdbc:mysql://" + host + ":" + port + "/" + databaseName;
             case "postgresql":
@@ -127,7 +127,7 @@ public class DatabaseConnectionService {
             case "oracle":
                 return "jdbc:oracle:thin:@" + host + ":" + port + ":" + databaseName;
             default:
-                throw new RuntimeException("Unsupported database type: " + dbType);
+                throw new RuntimeException("Unsupported database type: " + databaseType);
         }
     }
 
@@ -135,7 +135,7 @@ public class DatabaseConnectionService {
     private static class DatabaseConnectionInfo {
         private Connection connection;
         private Long profileId;
-        private String dbType;
+        private String databaseType;
         private LocalDateTime connectedAt;
 
         // Getters and setters
@@ -143,8 +143,8 @@ public class DatabaseConnectionService {
         public void setConnection(Connection connection) { this.connection = connection; }
         public Long getProfileId() { return profileId; }
         public void setProfileId(Long profileId) { this.profileId = profileId; }
-        public String getDbType() { return dbType; }
-        public void setDbType(String dbType) { this.dbType = dbType; }
+        public String getDatabaseType() { return databaseType; }
+        public void setDatabaseType(String databaseType) { this.databaseType = databaseType; }
         public LocalDateTime getConnectedAt() { return connectedAt; }
         public void setConnectedAt(LocalDateTime connectedAt) { this.connectedAt = connectedAt; }
     }

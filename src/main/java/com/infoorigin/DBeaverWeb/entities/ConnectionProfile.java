@@ -19,8 +19,8 @@ public class ConnectionProfile {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "consumer_id")
+    private Consumer consumer;
 
     @Column(nullable = false)
     private String name;

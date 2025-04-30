@@ -34,11 +34,11 @@ public class ConnectionProfileController {
         return ResponseEntity.ok(convertToDTO(profile));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<ConnectionProfileDTO>> getConnectionProfilesByUser(
-            @PathVariable Long userId) {
+    @GetMapping("/consumer/{consumerId}")
+    public ResponseEntity<List<ConnectionProfileDTO>> getConnectionProfilesByConsumer(
+            @PathVariable Long consumerId) {
         List<ConnectionProfile> profiles =
-                connectionProfileService.getConnectionProfilesByUserId(userId);
+                connectionProfileService.getConnectionProfilesByConsumerId(consumerId);
         List<ConnectionProfileDTO> profileDTOs = profiles.stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
@@ -49,7 +49,7 @@ public class ConnectionProfileController {
         // Convert ConnectionProfile entity to ConnectionProfileDTO
         ConnectionProfileDTO dto = new ConnectionProfileDTO();
         dto.setId(profile.getId());
-        dto.setUserId(profile.getUser().getId());
+        dto.setConsumerId(profile.getConsumer().getId());
         dto.setName(profile.getName());
         dto.setDatabaseType(profile.getDatabaseType());
         dto.setHost(profile.getHost());

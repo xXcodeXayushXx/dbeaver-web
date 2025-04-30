@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ConnectionRequest {
     private Long profileId; // Optional, can connect using saved profile
-    private String dbType;
+    private String databaseType;
     private String host;
     private Integer port;
     private String databaseName;
