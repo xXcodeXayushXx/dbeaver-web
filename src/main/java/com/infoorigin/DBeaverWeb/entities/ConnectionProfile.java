@@ -1,20 +1,52 @@
 package com.infoorigin.DBeaverWeb.entities;
 
-
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "connection_profiles")
 @Data
-@Table("connection_profiles")
+@NoArgsConstructor
+@AllArgsConstructor
 public class ConnectionProfile {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name; // User-defined name for the profile (e.g., "Production DB")
-    private String host; // Database host (e.g., "localhost")
-    private String port; // Database port (e.g., "5432")
-    private String database; // Database name (e.g., "mydb")
-    private String username; // Database username
-    private String password; // Plaintext password (consider encryption in production)
-    private String driverClassName; // JDBC driver (e.g., "org.postgresql.Driver")
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(name = "database_type", nullable = false)
+    private String databaseType;
+
+    @Column(nullable = false)
+    private String host;
+
+    @Column(nullable = false)
+    private Integer port;
+
+    @Column(name = "database_name", nullable = false)
+    private String databaseName;
+
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(name = "last_connected_at")
+    private LocalDateTime lastConnectedAt;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
 }
